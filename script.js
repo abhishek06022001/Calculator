@@ -18,15 +18,60 @@ function operate(num1, num2, logic) {
  */
 document.addEventListener('DOMContentLoaded',function(){
     var buttons = document.querySelectorAll('.button');
+    var operator = document.querySelectorAll('.operator');
+    var div = document.querySelectorAll('.display');
+    var action = "";
+    var flag = 0 ;
+    for(let oper of operator)
+    {   
+            oper.addEventListener('click',function()
+            {
+                 action = oper.textContent;
+                flag = 1;
+            })
+
+    }
     var dispvalue="";
     for(let button of buttons)
     {
        button.addEventListener('click',function()
        {        
-        let displayValue = button.textContent;
-        append(displayValue);
-
+            if(flag==1)
+            {   
+                let num1 = Number(div[0].textContent);
+                let num2 = Number(button.textContent);
+                // alert(operate(num1,num2,action));
+                div[0].textContent=operate(num1,num2,action);
+                flag = 0;
+            }else{
+                let displayValue = button.textContent;
+                append(displayValue);
+        
+            }
        })
+    }
+    function operate(num1 , num2 , a)
+    {
+     
+        switch(a)
+        {
+            case "+":
+                return num1+num2;
+                break;
+            case "-":
+                return subtract(num1, num2);
+                break;
+            case "*":
+                return multiply(num1,num2);
+                break;
+            case "/":
+                return divide(num1,num2);
+                break;
+            default:
+                console.log("default");
+
+        }
+
     }
     function append(val)
     {
@@ -43,39 +88,6 @@ document.addEventListener('DOMContentLoaded',function(){
         dispvalue = "";
 
     })
-    var ans = document.getElementsByClassName('ans');;
-    ans[0].addEventListener('click',function(){
-         let eq =   dispvalue ;
-        let idx = eq.search(/[\+\-\*\/]/);
-        
-        let operator  = eq.charAt(idx);
-        let num1 = parseInt(eq.slice(0,idx));
-        let num2 = parseInt(eq.slice(idx+1));
-        if(operator=== "+")
-        {
-             var div = document.getElementsByClassName('display');
-            div[0].textContent =   operate(num1,num2,add);
-        }else if( operator === "-")
-        {
-            var div = document.getElementsByClassName('display');
-            div[0].textContent =   operate(num1,num2,subtract);
-        }else if(operator === "*")
-        {
-            var div = document.getElementsByClassName('display');
-            div[0].textContent =   operate(num1,num2,multiply);
-
-        }else{
-            var div = document.getElementsByClassName('display');
-            div[0].textContent =   operate(num1,num2,divide);
-        }
-        
-    })
+   
 });
 
-// 3 then when i click + 3+2 now extract it into num1 operation num2 
-
-/**
- * Make the calculator work! You’ll need to store the first number and second number that are input into the calculator, utilize the operator that the user selects, and then operate() on the two numbers when the user presses the “=” key.
-You should already have the code that can populate the display, so once operate() has been called, update the display with the ‘solution’ to the operation.
-This is the hardest part of the project. You need to figure out how to store all the values and call the operate function with them. Don’t feel bad if it takes you a while to figure out the logic.
- */
